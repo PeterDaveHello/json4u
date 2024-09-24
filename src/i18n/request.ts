@@ -1,7 +1,7 @@
 import { isCN } from "@/lib/env";
 import { getRequestConfig } from "next-intl/server";
 
-export const locales = ["en", "zh"];
+export const locales = ["en", "zh", "zh-TW"];
 
 export default getRequestConfig(async () => {
   const locale = isCN ? "zh" : "en";

@@ -9,6 +9,11 @@ export async function generateMetadata() {
 
 export default async function Page() {
   const locale = await getLocale();
-  const Content = (await import(`./${locale}.mdx`)).default;
+  const Content = (await import(`./${locale}.mdx`).catch(async () => {
+    if (locale === "zh-TW") {
+      return import("./zh.mdx");
+    }
+    throw new Error("Locale not supported");
+  })).default;
   return <Content />;
 }

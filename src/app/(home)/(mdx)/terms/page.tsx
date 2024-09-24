@@ -1,5 +1,4 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import EnContent from "./en.mdx";
 
 export async function generateMetadata() {
   const locale = await getLocale();
@@ -8,6 +7,13 @@ export async function generateMetadata() {
   return { title: t("Terms") };
 }
 
-export default function Page() {
-  return <EnContent />;
+export default async function Page() {
+  const locale = await getLocale();
+  const Content = (await import(`./${locale}.mdx`).catch(async () => {
+    if (locale === "zh-TW") {
+      return import("./zh.mdx");
+    }
+    throw new Error("Locale not supported");
+  })).default;
+  return <Content />;
 }
